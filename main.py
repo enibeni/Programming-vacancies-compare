@@ -8,7 +8,7 @@ LANGUAGES = ['Python', 'Java', 'JavaScript', 'C#', 'Elixir', 'Ruby', 'Go', 'Scal
 
 if __name__ == '__main__':
     load_dotenv()
-
+    print(f'Загружаем вакансии для языков {", ".join(LANGUAGES)}')
     hh_vacancies = get_hh_statistics(LANGUAGES)
     sj_vacancies = get_sj_statistics(LANGUAGES)
 

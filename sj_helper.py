@@ -18,12 +18,10 @@ def fetch_vacancies_sj(keyword, town, period=30):
         'period': period,
     }
 
-    print(f'Downloading vacancies for {keyword}')
     for page in count():
         params.update({'page': page})
         response = requests.get(url, params=params, headers=headers)
-        if not response.ok:
-            response.raise_for_status()
+        response.raise_for_status()
         page_data = response.json()
         if not page_data['more']:
             break
@@ -45,12 +43,12 @@ def get_predict_rub_salary_sj(vacancy):
 def get_sj_statistics(languages):
     vacancies_info = {}
     for language in languages:
-        list_of_vacancies, total_found = fetch_vacancies_sj(town='Moscow', keyword=language)
-        salaries_list = [get_predict_rub_salary_sj(vacancy) for vacancy in list_of_vacancies]
+        vacancies, total_found = fetch_vacancies_sj(town='Moscow', keyword=language)
+        salaries = [get_predict_rub_salary_sj(vacancy) for vacancy in vacancies]
         vacancies_info[language] = {}
-        vacancies_info[language]['average_salary'] = get_average_salary(salaries_list)
+        vacancies_info[language]['average_salary'] = get_average_salary(salaries)
         vacancies_info[language]['vacancies_found'] = total_found
-        vacancies_info[language]['vacancies_processed'] = len(list_of_vacancies)
+        vacancies_info[language]['vacancies_processed'] = len(vacancies)
     return vacancies_info
 
 

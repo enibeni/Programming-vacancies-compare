@@ -1,11 +1,11 @@
 from terminaltables import AsciiTable
 
 
-def get_average_salary(salaries_list):
-    if not salaries_list:
+def get_average_salary(salaries):
+    salaries = [salary for salary in salaries if salary is not None and salary != 0]
+    if salaries is None or salaries == []:
         return None
-    salaries_list = [salary for salary in salaries_list if salary is not None]
-    average_salary = int(sum(salaries_list) / len(salaries_list))
+    average_salary = int(sum(salaries) / len(salaries))
     return average_salary
 
 

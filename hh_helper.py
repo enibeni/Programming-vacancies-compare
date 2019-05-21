@@ -16,12 +16,11 @@ def fetch_vacancies_hh(text=None, area=None, period=30):
         'period': period,
         'per_page': 100
     }
-    print(f'Downloading vacancies for {text}')
+
     for page in count():
         params.update({'page': page})
         response = requests.get(url, params=params, headers=headers)
-        if not response.ok:
-            response.raise_for_status()
+        response.raise_for_status()
         page_data = response.json()
         if page >= page_data['pages'] - 1:
             break
@@ -49,13 +48,13 @@ def get_hh_statistics(languages):
     area_code_for_moscow = 1
     vacancies_info = {}
     for language in languages:
-        list_of_vacancies, total_found = fetch_vacancies_hh(
+        vacancies, total_found = fetch_vacancies_hh(
             text=language,
             area=area_code_for_moscow
         )
-        salaries_list = [get_predict_rub_salary_hh(vacancy) for vacancy in list_of_vacancies]
+        salaries = [get_predict_rub_salary_hh(vacancy) for vacancy in vacancies]
         vacancies_info[language] = {}
         vacancies_info[language]['vacancies_found'] = total_found
-        vacancies_info[language]['vacancies_processed'] = len(list_of_vacancies)
-        vacancies_info[language]['average_salary'] = get_average_salary(salaries_list)
+        vacancies_info[language]['vacancies_processed'] = len(vacancies)
+        vacancies_info[language]['average_salary'] = get_average_salary(salaries)
     return vacancies_info
